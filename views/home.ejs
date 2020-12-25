@@ -1,0 +1,15 @@
+ <%- include( "partials/header" ) -%> 
+<div>
+    Welcome   <%=name %>  to library managment system
+
+    <% bookdata.forEach(element => {%>
+        <input type="hidden" id="custId" name="custId" value=<%=element.bookid%>>
+        <p><%=element.bookname%> </p>  
+        <p><%=element.author%></p>
+        <p><%=element.publishdate%></p>
+        
+        <a href="/addbook?id=<%=element.bookid%>&name=<%=element.bookname%>&author=<%=element.author%>&pub_date=<%=element.publishdate%>" ><button class = "btn btn-primary">Add book</button></a>
+    <% }); %>
+
+</div>
+<%- include( "partials/footer" ) -%> 

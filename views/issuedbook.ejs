@@ -1,0 +1,8 @@
+ <%- include( "partials/header" ) -%> 
+ <% books.forEach(book =>{%>
+    <p><%=book.bookname%></p>
+    <p><%=book.author%></p>
+
+ <%}) %> 
+ <p>This are the following books issued to u </p>
+<%- include( "partials/footer" ) -%> 
