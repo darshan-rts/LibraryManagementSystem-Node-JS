@@ -1,0 +1,29 @@
+ <%- include( "admin/header" ) -%> 
+  <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Book Id</th>
+      <th scope="col">Name</th>
+      <th scope="col">Author</th>
+      <th scope="col">Status</th>
+      <th scope="col">Requested By</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+     <% requests.forEach(request =>{%>
+    <tr>
+      <th scope="row"><%=request.book_id%></th>
+      <td><%=request.book_name%></td>
+      <td><%=request.author%></td>
+      <td><%=request.req_accepted%></td>
+      <td><%=request.user_name%></td>
+       <td><a class="btn btn-success" href="/admin/accept?bookid=<%=request.book_id%>&userid=<%=request.user_id%> ">Accept</a> 
+        <a class="btn btn-danger" href="/admin/reject?bookid=<%=request.book_id%>&userid=<%=request.user_id%>">Reject</a> </td>
+    </tr>
+     <%}) %> 
+   
+  </tbody>
+</table>
+ 
+ <%- include( "partials/footer" ) -%> 

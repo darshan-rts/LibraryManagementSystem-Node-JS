@@ -1,12 +1,14 @@
 //jshint esversion:6
 const express = require("express");
 const bodyParser = require("body-parser");
-const addUser = require('./addUser');
+const registerUser = require('./registerUser');
 const ejs = require("ejs");
-const dbcon=require("./db");
-const { getMaxListeners } = require("process");
 const bookdata = require('./book.json');
 const session = require('express-session');
+const loginUser = require('./loginUser');
+const userData = require('./sql_db/userData');
+const admin = require('./admin');
+
 
 
 
@@ -23,112 +25,115 @@ app.use(session({
   
     // It holds the secret key for session 
     secret: 'Your_Secret_Key', 
+    resave:true,
+    saveUninitialized:false
   
-    // Forces the session to be saved 
-    // back to the session store 
-    resave: true, 
-  
-    // Forces a session that is "uninitialized" 
-    // to be saved to the store 
-    saveUninitialized: true
+    
 }))
 
-var sess;
+// var sess;
 
-app.get("/",function(req, res){
-    res.send('Hey Project started!');
+app.get('/', (req, res) =>{
+  res.send('Welcome to Login and Regiister Page');
 });
 
-//app.use('/', addUser());
 
-app.get("/adduser",function(req,res){
-    res.render("form");
 
-})
+app.use('/register', registerUser(userData));
+app.use('/login', loginUser(userData, bookdata));
+app.use('/logout', loginUser(userData, bookdata));
+app.use('/admin', admin());
 
-app.post("/adduser",function(req, res){
+// app.use('/addbook', addBook());
 
-    console.log("Darshan ", req.body)
+// app.get("/adduser",function(req,res){
+//     res.render("form");
 
-      const useremail=req.body.email
-      const username=req.body.username
+// })
+
+// app.post("/adduser",function(req, res){
+
+//     console.log("Darshan ", req.body)
+
+//       const useremail=req.body.email
+//       const username=req.body.username
      
-      const sql = `INSERT INTO user ( user_name, user_email ) VALUES ( '${username}', '${useremail}')`; 
+//       const sql = `INSERT INTO user ( user_name, user_email ) VALUES ( '${username}', '${useremail}')`; 
     
-      dbcon.query(sql, function (err, result) {  
-      if (err) throw err;  
-      console.log("1 record inserted");
+//       dbcon.query(sql, function (err, result) {  
+//       if (err) throw err;  
+//       console.log("1 record inserted");
 
-      const currentuser = result.insertId;
-     // console.log(currentuser);
+//       const currentuser = result.insertId;
+//      // console.log(currentuser);
      
-      // console.log("id to be fetched ",sess.currentid);
-      var getcurrentusername=`select user_name from user where user_id=${sess.currentid}`;
+//       // console.log("id to be fetched ",sess.currentid);
+//       var getcurrentusername=`select user_name from user where user_id=${sess.currentid}`;
 
-      dbcon.query(getcurrentusername, (err, result)=>{
+//       dbcon.query(getcurrentusername, (err, result)=>{
 
-          if(err) throw err;
-           const name =  result[0].user_name;
-           // console.log(name);
-          res.render("login.ejs");
-      })
+//           if(err) throw err;
+//            const name =  result[0].user_name;
+//            // console.log(name);
+//           res.render("login.ejs");
+//       })
           
-      });
+//       });
       
     
-});
+// });
 
-app.post('/login', (req, res) =>{
-    const{email, name} = req.body;
-    const user = `select * from user WHERE user_email = '${email}'`;
-    dbcon.query(user, (err, confirmuser)=>{
-        if(err) throw err;
-        console.log(confirmuser);
-        // sess=req.session;
-        // sess.currentid = currentuser;
+// app.post('/login', (req, res) =>{
+//     const{email, name} = req.body;
+//     const user = `select * from user WHERE user_email = '${email}'`;
+//     dbcon.query(user, (err, confirmuser)=>{
+//         if(err) throw err;
+//         console.log(confirmuser);
+//         // sess=req.session;
+//         // sess.currentid = currentuser;
       
-        res.render('home', {});
-    })
-    console.log(req.body);
-})
+//         res.render('home', {});
+//     })
+//     console.log(req.body);
+// })
 
-app.get("/addbook",function(req,res){
-    console.log(sess.currentid);
-    console.log("--------------------------------------",req.query);
-    const {id, name, author, date} = req.query;
-     const sql = `INSERT INTO book ( bookname, pub_date, author, user_id) VALUES ( '${name}','${date}','${author}',${sess.currentid})`; 
-      dbcon.query(sql, function (err, result) {  
-      if (err) throw err;  
-      console.log("1 record inserted");  
-      });
+// app.get("/addbook",function(req,res){
+//     console.log(sess.currentid);
+//     console.log("--------------------------------------",req.query);
+//     const {id, name, author, date} = req.query;
+//      const sql = `INSERT INTO book ( bookname, pub_date, author, user_id) VALUES ( '${name}','${date}','${author}',${sess.currentid})`; 
+//       dbcon.query(sql, function (err, result) {  
+//       if (err) throw err;  
+//       console.log("1 record inserted");  
+//       });
 
-      console.log("printing session from add  boook");
-      console.log(sess.currentid);
+//       console.log("printing session from add  boook");
+//       console.log(sess.currentid);
 
     
-  //   console.log(`Executed---------------------------------------`);
-});
+//   //   console.log(`Executed---------------------------------------`);
+// });
 
-app.get('/issuedbook', (req, res)=>{
-    const issuebook = `select bookname, author from book where user_id = ${sess.currentid}`;
+// app.get('/issuedbook', (req, res)=>{
+//     const issuebook = `select bookname, author from book where user_id = ${sess.currentid}`;
 
-    dbcon.query(issuebook, (err, books)=>{
-        if(err)throw err;
-        console.log('Issued Book ----------------------------------------------------')
+//     dbcon.query(issuebook, (err, books)=>{
+//         if(err)throw err;
+//         console.log('Issued Book ----------------------------------------------------')
 
-        console.log(books);
-        res.render('issuedbook', {books});
-    })
-    // try {
-    //     const bookname = await dbcon.query(issuebook);
-    //     console.log(bookname);
-    //     res.render('issuedbook',{bookname});
+//         console.log(books);
+//         res.render('issuedbook', {books});
+//     })
+//     // try {
+//     //     const bookname = await dbcon.query(issuebook);
+//     //     console.log(bookname);
+//     //     res.render('issuedbook',{bookname});
 
-    // } catch (error) {
-    //     console.log(error);
-    // }
+//     // } catch (error) {
+//     //     console.log(error);
+//     // }
 
-});
+// });
 
 let port =process.env.PORT;
 if(port ==null || port ==""){

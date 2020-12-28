@@ -1,15 +1,32 @@
  <%- include( "partials/header" ) -%> 
 <div>
-    Welcome   <%=name %>  to library managment system
+    <h3>Welcome   <%=username %>  to library managment system</h3>
+    <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">BookId</th>
+      <th scope="col">Name</th>
+      <th scope="col">Author</th>
+      <th scope="col">PublishDate</th>
+      <th></th>
+    </tr>
+  </thead>
 
+  <tbody>
     <% bookdata.forEach(element => {%>
-        <input type="hidden" id="custId" name="custId" value=<%=element.bookid%>>
-        <p><%=element.bookname%> </p>  
-        <p><%=element.author%></p>
-        <p><%=element.publishdate%></p>
-        
-        <a href="/addbook?id=<%=element.bookid%>&name=<%=element.bookname%>&author=<%=element.author%>&pub_date=<%=element.publishdate%>" ><button class = "btn btn-primary">Add book</button></a>
+    <tr>
+      <th scope="row"><%=element.bookid%></th>
+      <td><%=element.bookname%></td>
+      <td><%=element.author%></td>
+      <td><%=element.publishdate%></td>
+      <td><a class = "btn btn-primary" href="/login/home/addbook?id=<%=element.bookid%>&name=<%=element.bookname%>&author=<%=element.author%>&pub_date=<%=element.publishdate%>" >
+           Add Book</a></td>
+    </tr>
     <% }); %>
+   
+  </tbody>
+</table>
+  
 
 </div>
 <%- include( "partials/footer" ) -%> 
