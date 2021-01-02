@@ -5,10 +5,8 @@ const requestData = require('./sql_db/requestData');
 
 module.exports = () =>{
     router.get('/', async(req, res) =>{
-        const requests = await requestData.getUserPendingRequest(req.session.userid);
-        res.render('pendingrequest', {requests});
-        // res.redirect('/login/home/pendingrequests')   
-        
+        const requests = await requestData.getUserStatus(req.session.userid);
+        res.render('status', {requests});        
     });
     return router;
 }

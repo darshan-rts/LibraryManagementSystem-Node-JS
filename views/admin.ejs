@@ -1,5 +1,5 @@
- <%- include( "admin/header" ) -%> 
-  <table class="table">
+<%- include( "admin/header" ) -%>
+<table class="table">
   <thead>
     <tr>
       <th scope="col">Book Id</th>
@@ -7,23 +7,49 @@
       <th scope="col">Author</th>
       <th scope="col">Status</th>
       <th scope="col">Requested By</th>
+      <th scope="col">Stock</th>
+      <th scope="col">Request Date</th>
+      <th scope="col">Request Time</th>
       <th></th>
     </tr>
   </thead>
   <tbody>
-     <% requests.forEach(request =>{%>
+    <% requests.forEach(request =>{%>
     <tr>
       <th scope="row"><%=request.book_id%></th>
-      <td><%=request.book_name%></td>
+      <td><%=request.bookname%></td>
       <td><%=request.author%></td>
       <td><%=request.req_accepted%></td>
       <td><%=request.user_name%></td>
-       <td><a class="btn btn-success" href="/admin/accept?bookid=<%=request.book_id%>&userid=<%=request.user_id%> ">Accept</a> 
-        <a class="btn btn-danger" href="/admin/reject?bookid=<%=request.book_id%>&userid=<%=request.user_id%>">Reject</a> </td>
+      <td><%=request.stocks%></td>
+      <td><%=request.date_current%></td>
+      <td><%=request.time_current%></td>
+      <form action="/admin/reject" method="POST">     
+        <input type="hidden" name= "bookname" value="<%=request.bookname%>" >
+        <input type="hidden" name = "userid" value=<%=request.user_id%> >
+        <input type="hidden" name = "stocks" value=<%=request.stocks%> >
+        <input type="hidden" name = "date" value=<%=request.date_current%> >
+
+
+        <td><input type="text" name="comment" id=""></td>
+
+      <td>
+        <button  class="btn btn-success" name="handle"  value = "accept" type="submit">Accept</button>
+        <!-- Button trigger modal -->
+        
+    
+      </td>
+       <td>
+        <button class="btn btn-warning"  name="handle" value="reject" type="submit">Reject</button>
+        <!-- Button triger modal -->
+        
+    
+      </td>
+      </form>
+
     </tr>
-     <%}) %> 
-   
+    <%}) %>
   </tbody>
 </table>
- 
- <%- include( "partials/footer" ) -%> 
+
+<%- include( "admin/footer" ) -%>

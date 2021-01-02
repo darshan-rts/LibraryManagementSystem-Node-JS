@@ -8,20 +8,22 @@
       <th scope="col">Name</th>
       <th scope="col">Author</th>
       <th scope="col">PublishDate</th>
-      <th></th>
+      <th scope = 'col'>Stock</th>
     </tr>
   </thead>
 
   <tbody>
     <% bookdata.forEach(element => {%>
     <tr>
-      <th scope="row"><%=element.bookid%></th>
-      <td><%=element.bookname%></td>
+      <th scope="row"><%=element.book_id%></th>
+      <td <%=element.bookname%>"><%=element.bookname%></td>
       <td><%=element.author%></td>
-      <td><%=element.publishdate%></td>
-      <td><a class = "btn btn-primary" href="/login/home/addbook?id=<%=element.bookid%>&name=<%=element.bookname%>&author=<%=element.author%>&pub_date=<%=element.publishdate%>" >
+      <td><%=element.pub_date%></td>
+      <td><%=element.stocks %> </td>
+      <td><a class = "btn btn-primary" href="/login/home/addbook?id=<%=element.book_id%>&name=<%=element.bookname%>&author=<%=element.author%>&pub_date=<%=element.pub_date%>&stocks=<%=element.stocks %> " >
            Add Book</a></td>
-    </tr>
+      <input type="hidden" name="stock" value="<%=element.stocks %>">   
+ </tr>
     <% }); %>
    
   </tbody>

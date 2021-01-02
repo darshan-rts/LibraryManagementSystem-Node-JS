@@ -1,0 +1,36 @@
+ <%- include( "partials/header" ) -%> 
+
+ <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Name</th>
+      <th scope="col">Author</th>
+      <th scope="col" >IssueDate</th>
+      <th scope="col">Time</th>
+      <th class="scope">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+     <% requests.forEach(request =>{%>
+    <tr>
+      <th scope="row"><%=request.id%></th>
+      <td><%=request.book_name%></td>
+      <td><%=request.author%></td>
+      <td><%=request.date_current%></td>
+      <td><%=request.time_current%></td>
+      <% if(request.req_accepted == 'Accepted') { %>
+          <td class="btn-success"><%=request.req_accepted%></td>
+      <%} else if(request.req_accepted == 'Pending') { %>
+          <td class="btn-warning"><%=request.req_accepted%></td>
+     <% } else{ %>
+          <td class="btn-danger"><%=request.req_accepted%></td>
+     <%} %> 
+
+    </tr>
+     <%}) %> 
+   
+  </tbody>
+</table>
+ 
+<%- include( "partials/footer" ) -%> 

@@ -7,9 +7,10 @@ module.exports = (userData)=>{
         res.render('form', {template:'adduser'});
     });
 
-    router.post('/register', (req, res)=>{
+    router.post('/', (req, res)=>{
         const {email, username} = req.body;
         userData.insert(email, username);
+        res.redirect('/register');
 
     });
 

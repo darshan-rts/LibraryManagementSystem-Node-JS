@@ -5,14 +5,13 @@ const home = require("./home");
 const redirectLogin = require('./redirectLogin');
 const bookdetails = require('./sql_db/bookData');
 
-module.exports = (userData, bookdata) => {
+module.exports = (userData) => {
 
   router.get("/", (req, res) => {
     res.render("login");
   });
 
   router.post("/", async (req, res, next) => {
-
     const { email, username } = req.body;
     const user = await userData.getUser(email);
 
@@ -29,7 +28,7 @@ module.exports = (userData, bookdata) => {
 
   });
 
-  router.use("/home", redirectLogin, home( bookdata));
+  router.use("/home", redirectLogin, home());
 
   
 

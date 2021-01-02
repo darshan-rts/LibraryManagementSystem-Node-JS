@@ -3,11 +3,11 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const registerUser = require('./registerUser');
 const ejs = require("ejs");
-const bookdata = require('./book.json');
 const session = require('express-session');
 const loginUser = require('./loginUser');
 const userData = require('./sql_db/userData');
 const admin = require('./admin');
+const logoutUser = require('./logout');
 
 
 
@@ -34,15 +34,14 @@ app.use(session({
 // var sess;
 
 app.get('/', (req, res) =>{
-  res.send('Welcome to Login and Regiister Page');
+  res.render('landing');
 });
 
-
-
 app.use('/register', registerUser(userData));
-app.use('/login', loginUser(userData, bookdata));
-app.use('/logout', loginUser(userData, bookdata));
+app.use('/login', loginUser(userData));
 app.use('/admin', admin());
+app.use('/logout', logoutUser());
+
 
 // app.use('/addbook', addBook());
 

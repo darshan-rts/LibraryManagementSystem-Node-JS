@@ -1,0 +1,7 @@
+<%- include( "partials/header" ) -%>
+<ul class="list-group">
+    <% comments.forEach((comment)=>{%>
+        <li class="list-group-item"><%=comment.comments %> </li>
+    <% }) %> 
+</ul>
+<%- include( "admin/footer" ) -%>
