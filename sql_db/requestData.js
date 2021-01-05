@@ -4,17 +4,7 @@ const userData = require('./userData');
 
 class Request
 {
-    getDateAndTime()
-    {
-        const date = new Date();
-        const dd = date.getDate();
-        const mm = date.getMonth() + 1;
-        const yyyy = date.getFullYear();
-        const currentDate = dd+'/'+mm+'/'+yyyy;
-        const currentTime = date.getHours()+":"+date.getMinutes();
-        console.log(date.toLocaleString());
-        return {date: currentDate, time:currentTime};
-    }
+   
 
 
     async makeRequest(bookid, userid)
@@ -94,9 +84,8 @@ class Request
     async getBookForUser(userid, bookid)
     {
         const query =  `SELECT book_id FROM book_request
-                        WHERE book_id = ${bookid} AND user_id = ${userid} 
-                        AND (req_accepted = 'Returned' OR req_accepted = '')`;
-
+                        WHERE book_id = ${bookid} AND user_id = ${userid}
+                        AND req_accepted NOT IN('Returned', 'Rejected');`;
         try {
             return await this.selectQuery(query);
         } catch (error) {
@@ -189,7 +178,8 @@ class Request
                         WHERE
                         book_name = '${bookname}' 
                         AND
-                        user_id = '${userid}'`;
+                        user_id = '${userid}' 
+                        AND req_accepted = 'Pending'`;
         dbcon.query(query, err=>{
             if(err)
             {
@@ -210,7 +200,7 @@ class Request
                        WHERE
                         book_name = '${bookname}' 
                         AND
-                        user_id = '${userid}'`;
+                        user_id = '${userid}' AND req_accepted = 'Pending'`;
         dbcon.query(query, (err)=>{
             if(err)
             console.log(err);
@@ -274,14 +264,15 @@ class Request
         });
     }
 
-    async getStocksDetails(req)
+    async getStocksDetails(status1, status2)
     {
         const sql =    `SELECT bookname, book.book_id, book.bookname, user_name, book.author, stocks, 
                         req_accepted, book_request.user_id, date_current, time_current, valid_till
                         FROM book 
                         INNER JOIN book_request 
                         ON book_request.book_id = book.book_id 
-                        AND book_request.req_accepted = '${req}'`;
+                        WHERE(book_request.req_accepted = '${status1}'
+                        OR book_request.req_accepted = '${status2}')`;
 
        return await this.selectQuery(sql);
 

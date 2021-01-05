@@ -7,6 +7,7 @@
         <th scope="col">Author</th>
         <th scope="col">Name</th>
         <th scope="col">Validity</th>
+        <th>Status</th>
         <th></th>
     </tr>
   </thead>
@@ -18,14 +19,25 @@
       <td><%=element.author%></td>
       <td><%=element.user_name%></td>
       <td><%=element.valid_till %> </td>
+      <td><%=element.req_accepted %></td>
       <td><a class = "btn btn-primary" href="/admin/return?id=<%=element.book_id%>&bookname=<%=element.bookname%>&author=<%=element.author%>&stocks=<%=element.stocks %>&userid=<%=element.user_id %>  " >
            Return</a></td>
    </tr>
+   <tr>
+     <% if(penalty) {%>
+      <div class="alert alert-danger"><%=element.user_name%> has <%=penalty %>rs Penalty.</div>
+     <%}%> 
+  </tr>
+   
     <% }); %>
    
   </tbody>
 </table>
-  
+
+   
+     
+      
+   
 
 </div>
 <%- include( "admin/footer" ) -%> 
