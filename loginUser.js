@@ -48,8 +48,8 @@ module.exports = (userData) => {
       const user = await userData.getUser(normalizedEmail);
 
       if (!user || user.length === 0) {
-        // No user found
-        console.info(`Login failed: no user for email ${normalizedEmail}`);
+        // No user found - do not log email to protect privacy
+        console.info("Login failed: user not found");
         return res.redirect("/login");
       }
 
@@ -57,13 +57,13 @@ module.exports = (userData) => {
 
       // If DB has a password field, require a match. Otherwise, deny for safety.
       if (!dbUser.password) {
-        console.warn(`User ${normalizedEmail} has no password set in DB — rejecting login.`);
+        console.warn("Login rejected: user account has no password configured");
         return res.redirect("/login");
       }
 
       const passwordMatches = await bcrypt.compare(password, dbUser.password);
       if (!passwordMatches) {
-        console.info(`Login failed: invalid password for ${normalizedEmail}`);
+        console.info("Login failed: invalid password");
         return res.redirect("/login");
       }
 

@@ -11,9 +11,9 @@ A simple Library Management System built with Node.js and plain HTML front-end. 
 
 ## Tech stack
 - Backend: Node.js (JavaScript)
-- Frontend: HTML (static pages served by Node)
-- Database: (placeholder — update to match repository: e.g., MongoDB / MySQL / SQLite)
-- Package manager: npm (or yarn)
+- Frontend: HTML/EJS templates served by Node
+- Database: MySQL
+- Package manager: npm
 
 ## Prerequisites
 - Node.js (recommended 16.x or 18.x)
@@ -34,7 +34,7 @@ A simple Library Management System built with Node.js and plain HTML front-end. 
 4. Run the app (development)
    npm run dev
    or
-   node server.js
+   node app.js
    Then open http://localhost:3000 (or the PORT you configured)
 
 5. Run the app (production)
@@ -44,10 +44,12 @@ A simple Library Management System built with Node.js and plain HTML front-end. 
 Create a `.env` file and set values appropriate for your environment:
 PORT=3000
 NODE_ENV=development
-DB_URI=mongodb://localhost:27017/library
-JWT_SECRET=your_jwt_secret_here
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_password
+DB_NAME=library
 
-(Replace DB_URI and JWT_SECRET with actual values used by the repo.)
+(Replace the database credentials with your actual MySQL configuration.)
 
 ## API examples
 Adjust these to match the repository routes if they differ:
@@ -76,8 +78,9 @@ Adapt this to the actual layout in the repository.
 - npm test — run tests (if present)
 
 ## Database setup
-- If using MongoDB: ensure MongoDB is running and DB_URI in .env points to the correct DB.
-- If using SQL (MySQL/Postgres/SQLite): run any migrations or seed scripts included in the repo and update DB_URI accordingly.
+- Ensure MySQL is running and create a database named `library`
+- Update the database configuration in your .env file with your MySQL credentials
+- The application uses the `mysql` package to connect to MySQL
 
 ## Contributing
 1. Fork the repo
@@ -99,5 +102,3 @@ Open an issue in the repository for bugs or feature requests.
 - Add tests and CI/CD instructions if desired
 
 --- 
-
-Copy and paste this into your README.md and adjust the placeholders (database, exact scripts, routes, and any repo-specific details).
