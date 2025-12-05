@@ -16,8 +16,8 @@ class User
     {
 
         return new Promise((resolve, reject)=>{
-            const sqlquery = `SELECT user_id, user_name, password FROM user WHERE user_email='${useremail}'`;
-            const user = dbcon.query(sqlquery, (err, result) =>{
+            const sqlquery = `SELECT user_id, user_name, password FROM user WHERE user_email=?`;
+            const user = dbcon.query(sqlquery, [useremail], (err, result) =>{
             if(err)
             {
                 reject(err);
